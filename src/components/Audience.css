@@ -1,0 +1,72 @@
+.audience-section {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--dark-bg) 100%);
+}
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.audience-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 100px; /* Pill shape */
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.audience-card:hover {
+  background: rgba(255, 90, 10, 0.05);
+  border-color: rgba(255, 90, 10, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 90, 10, 0.05);
+}
+
+.audience-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 90, 10, 0.15);
+  border-radius: 50%;
+  color: var(--secondary);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.audience-card:hover .audience-icon-wrapper {
+  background: var(--secondary);
+  color: var(--dark-bg);
+  box-shadow: 0 0 15px rgba(255, 90, 10, 0.4);
+}
+
+.audience-icon-wrapper svg {
+  width: 16px;
+  height: 16px;
+}
+
+.audience-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: color 0.3s ease;
+}
+
+.audience-card:hover .audience-label {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .audience-grid {
+    grid-template-columns: 1fr;
+  }
+}

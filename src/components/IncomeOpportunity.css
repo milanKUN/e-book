@@ -1,0 +1,141 @@
+.opportunity-section {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--dark-bg) 100%);
+  overflow: hidden;
+}
+
+/* Cards Grid */
+.opp-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 64px;
+}
+
+.opp-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.opp-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary), var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.opp-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.opp-card:hover::after {
+  opacity: 1;
+}
+
+.opp-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.opp-card-icon-emerald {
+  background: var(--secondary-glow);
+  color: var(--secondary);
+  border: 1px solid rgba(16, 166, 122, 0.2);
+}
+
+.opp-card-icon-gold {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(243, 198, 77, 0.2);
+}
+
+.opp-card-num {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.opp-card p {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Flow Bar */
+.flow-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 24px 40px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  max-width: 800px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.flow-chip {
+  padding: 10px 20px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.flow-chip:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.flow-chip-accent {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(243, 198, 77, 0.3);
+}
+
+.flow-connector {
+  width: 24px;
+  height: 2px;
+  background: rgba(16, 166, 122, 0.3);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .opp-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .flow-bar {
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 24px 20px;
+    gap: 4px;
+  }
+  .flow-connector {
+    width: 2px;
+    height: 16px;
+  }
+}

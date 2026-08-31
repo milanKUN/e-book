@@ -1,0 +1,131 @@
+.final-cta-section {
+  background: radial-gradient(ellipse at center top, var(--primary-light) 0%, var(--primary) 60%, var(--dark-bg) 100%);
+  padding: 120px 24px;
+}
+
+.cta-content {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.cta-subheadline {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.cta-btn-wrapper {
+  margin-bottom: 0;
+}
+
+.btn-large {
+  font-size: 1.15rem;
+  padding: 22px 40px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.cta-note {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  max-width: 900px;
+  margin: 64px auto 0;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 90, 10, 0.2);
+  border-radius: 50%;
+  color: var(--secondary);
+}
+
+.check svg {
+  width: 12px;
+  height: 12px;
+}
+
+.trust-item.secure .check {
+  background: rgba(243, 198, 77, 0.2);
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .final-cta-section {
+    padding: 80px 20px;
+  }
+  .trust-badges {
+    gap: 16px;
+  }
+}
+
+.cta-process-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 40px 0;
+}
+
+.process-step {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.process-step.highlight {
+  color: var(--secondary);
+  border-color: rgba(255, 90, 10, 0.4);
+  background: rgba(255, 90, 10, 0.15);
+  box-shadow: 0 0 20px rgba(255, 90, 10, 0.2);
+}
+
+.process-arrow {
+  color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+}
+
+.process-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 480px) {
+  .cta-process-flow {
+    flex-direction: column;
+  }
+  .process-arrow {
+    transform: rotate(90deg);
+  }
+}

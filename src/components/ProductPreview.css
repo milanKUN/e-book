@@ -1,0 +1,144 @@
+.preview-section {
+  background: var(--dark-bg);
+  position: relative;
+}
+
+.preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.preview-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.preview-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 90, 10, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 90, 10, 0.1);
+}
+
+.preview-mockup-wrapper {
+  height: 200px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* CSS Page Mockup */
+.mockup-content {
+  width: 140px;
+  height: 180px;
+  background: #fff;
+  border-radius: 4px 12px 12px 4px;
+  padding: 16px;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.5), inset 4px 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transform: perspective(800px) rotateY(-15deg);
+  transition: transform 0.4s ease;
+}
+
+.preview-card:hover .mockup-content {
+  transform: perspective(800px) rotateY(-5deg) scale(1.05);
+}
+
+.mockup-header {
+  height: 8px;
+  width: 60%;
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+.mockup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.mockup-line {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.mockup-line.short {
+  width: 70%;
+}
+
+.mockup-box {
+  height: 40px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  border: 1px dashed #cbd5e1;
+  margin: 4px 0;
+}
+
+/* Specific Mockup Types */
+.type-grid .mockup-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.type-grid .mockup-box {
+  height: 30px;
+  margin: 0;
+}
+
+.type-flow .mockup-box {
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(255, 90, 10, 0.1);
+  border: 1px solid rgba(255, 90, 10, 0.3);
+}
+
+.type-code .mockup-box {
+  background: #1e293b;
+  border: none;
+}
+.type-code .mockup-line {
+  background: #334155;
+}
+
+.preview-info {
+  padding: 24px;
+}
+
+.preview-info h4 {
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.preview-info p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .preview-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .preview-gallery {
+    grid-template-columns: 1fr;
+  }
+}

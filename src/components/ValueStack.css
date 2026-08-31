@@ -1,0 +1,113 @@
+.value-stack-section {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.value-stack-container {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 60px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.value-stack-visual {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.massive-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.number-500 {
+  font-family: var(--font-heading);
+  font-size: clamp(8rem, 15vw, 12rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 20px 40px rgba(255, 90, 10, 0.2);
+}
+
+.number-text {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 4px;
+  margin-top: -10px;
+}
+
+.visual-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.value-stack-content {
+  flex: 1;
+}
+
+.value-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.value-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.value-check {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 90, 10, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.value-check svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 992px) {
+  .value-stack-container {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .value-list {
+    grid-template-columns: 1fr;
+  }
+}

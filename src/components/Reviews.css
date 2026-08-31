@@ -1,0 +1,140 @@
+.reviews-section {
+  background: linear-gradient(180deg, var(--dark-bg) 0%, var(--primary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.marquee-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 20px 0;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+}
+
+.marquee-left {
+  animation: scrollLeft 40s linear infinite;
+}
+
+.marquee-right {
+  animation: scrollRight 45s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 32px;
+  width: 400px; /* Fixed width for marquee items */
+  flex-shrink: 0;
+}
+
+.star-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+.review-content {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+  flex-grow: 1;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.author-details {
+  flex-grow: 1;
+}
+
+.author-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.author-role {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.verified-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.verified-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .review-card {
+    padding: 28px 24px;
+    width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .review-card {
+    width: 300px;
+  }
+}
