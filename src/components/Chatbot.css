@@ -389,7 +389,7 @@
   }
   
   .chatbot-fab {
-    bottom: 100px; /* Push above sticky CTA */
+    bottom: 140px; /* Push above the raised sticky CTA */
     right: 20px;
     width: 60px;
     height: 60px;
