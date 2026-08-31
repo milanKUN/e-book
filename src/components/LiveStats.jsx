@@ -73,7 +73,7 @@ const LiveStats = () => {
   }, []);
 
   return (
-    <section className="section bg-light live-stats-section">
+    <section className="section section-dark live-stats-section">
       <div className="container">
         <div className="stats-grid reveal">
           
