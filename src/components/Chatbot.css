@@ -389,10 +389,10 @@
   }
   
   .chatbot-fab {
-    bottom: 100px; /* Push above sticky CTA */
-    right: 20px;
-    width: 60px;
-    height: 60px;
+    bottom: 85px; /* Sit right above the sticky CTA */
+    right: 12px;
+    width: 52px;
+    height: 52px;
   }
   
   .chatbot-header {
