@@ -6,6 +6,8 @@ const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const messagesEndRef = useRef(null);
 
   // Exact Script and Logic provided by user
@@ -169,6 +171,35 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setInputValue(val);
+    
+    if (val.trim().length > 1) {
+      const allQuestions = Object.keys(chatLogic.responses).filter(q => 
+        !q.includes("See more") && 
+        !q.includes("See even more") && 
+        !q.includes("GET THE GUIDE")
+      );
+      
+      const matches = allQuestions.filter(q => 
+        q.toLowerCase().includes(val.toLowerCase())
+      );
+      
+      setSuggestions(matches.slice(0, 3));
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+    const val = inputValue.trim();
+    setInputValue("");
+    setSuggestions([]);
+    handleOptionClick(val);
+  };
+
   const handleOptionClick = (questionText) => {
     // Add user message
     setMessages(prev => [...prev, { type: 'user', text: questionText }]);
@@ -286,6 +317,39 @@ const Chatbot = () => {
           )}
           
           <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area & Suggestions */}
+        <div className="chatbot-input-container">
+          {suggestions.length > 0 && (
+            <div className="chatbot-suggestions">
+              {suggestions.map((s, idx) => (
+                <div key={idx} className="suggestion-item" onClick={() => {
+                  setInputValue('');
+                  setSuggestions([]);
+                  handleOptionClick(s);
+                }}>
+                  {s}
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <form className="chatbot-input-area" onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}>
+            <input 
+              type="text" 
+              className="chatbot-input" 
+              placeholder="Type your question..." 
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            <button type="submit" className="chatbot-send-btn" disabled={!inputValue.trim()}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width: 18, height: 18}}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </form>
         </div>
       </div>
     </>
