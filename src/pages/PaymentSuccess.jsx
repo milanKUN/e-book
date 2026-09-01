@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import './PaymentSuccess.css';
 import { config } from '../config';
 
@@ -12,8 +10,7 @@ const PaymentSuccess = () => {
 
   return (
     <>
-      <Header />
-      <main className="success-section">
+      <main className="success-section" style={{ minHeight: '100vh' }}>
         <div className="container">
           <div className="success-card">
             <div className="success-icon">
@@ -68,7 +65,6 @@ const PaymentSuccess = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 };
