@@ -109,6 +109,19 @@
   animation: iconUpdateGlow 0.5s ease-out forwards;
 }
 
+.trend-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  color: #10b981; /* Tailwind emerald-500 */
+}
+
+.trend-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
 @media (max-width: 992px) {
   .stats-grid {
     grid-template-columns: 1fr;
