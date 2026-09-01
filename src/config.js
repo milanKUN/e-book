@@ -15,8 +15,8 @@ export const config = {
   EBOOK_DOWNLOAD_URL: "",
 
   // Contact (Empty strings hide them in the footer)
-  PHONE_NUMBER: "+919239384075",
-  WHATSAPP_NUMBER: "+919239384075",
+  PHONE_NUMBER: "+919735659798",
+  WHATSAPP_NUMBER: "+919735659798",
   EMAIL: "gurunetra@gmail.com",
 
   // Sales Counter System
