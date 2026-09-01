@@ -27,6 +27,5 @@
 @media (max-width: 768px) {
   .sticky-mobile-cta {
     display: block;
-    bottom: 45px; /* Leave space for Netlify badge at the bottom */
   }
 }
