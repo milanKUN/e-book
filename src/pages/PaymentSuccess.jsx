@@ -13,6 +13,10 @@ const PaymentSuccess = () => {
       <main className="success-section" style={{ minHeight: '100vh' }}>
         <div className="container">
           <div className="success-card">
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <img src="/logo.png" alt={`${config.COMPANY_NAME} Logo`} style={{ height: '64px', width: 'auto', borderRadius: '8px', margin: '0 auto' }} />
+            </div>
+
             <div className="success-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
