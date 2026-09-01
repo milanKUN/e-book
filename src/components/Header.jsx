@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { config } from '../config';
 import './Header.css';
 
+import { Link } from 'react-router-dom';
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -68,9 +70,9 @@ const Header = () => {
       </div>
 
       <div className="header-container">
-        <a href="#" className="header-brand">
+        <Link to="/" className="header-brand">
           <img src="/logo.png" alt="Guru Netra Logo" className="header-logo-img" />
-        </a>
+        </Link>
 
         <div className="header-timer">
           <div className="time-block">
