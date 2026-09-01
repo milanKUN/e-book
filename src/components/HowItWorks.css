@@ -80,39 +80,75 @@
 }
 
 @media (max-width: 768px) {
+  .works-section {
+    padding: 60px 0;
+  }
+  
   .timeline {
     grid-template-columns: 1fr;
     gap: 32px;
+    padding: 0 12px;
   }
+  
   .timeline-step {
     display: flex;
     text-align: left;
     gap: 20px;
-    align-items: flex-start;
+    align-items: stretch;
   }
+  
   .step-number-wrapper {
     flex-direction: column;
     margin-bottom: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
+  
+  .step-number {
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    border-width: 2px;
+  }
+  
   .step-line {
-    top: 60px;
-    bottom: -32px;
-    left: 30px; /* Center of the 60px circle */
+    position: absolute;
+    top: 60px; /* Below the 52px circle */
+    bottom: -32px; /* Span the 32px gap to the next step */
+    left: 50%;
+    transform: translateX(-50%);
     width: 2px;
     height: auto;
-    transform: none;
-    background: linear-gradient(180deg, var(--secondary), rgba(255, 90, 10, 0.1));
+    background: linear-gradient(180deg, var(--secondary) 0%, rgba(255, 90, 10, 0) 100%);
   }
+  
   .timeline-step:last-child .step-line {
     display: none;
   }
-  .step-number {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-  }
+  
   .step-content {
-    padding: 0;
+    padding: 0 0 16px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .step-num-label {
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+  }
+  
+  .step-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+  
+  .step-content p {
+    font-size: 0.95rem;
+    margin: 0;
   }
 }
