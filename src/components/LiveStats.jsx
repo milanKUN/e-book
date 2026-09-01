@@ -4,72 +4,74 @@ import './LiveStats.css';
 const LiveStats = () => {
   const [visitors, setVisitors] = useState(() => {
     const saved = localStorage.getItem('live_visitors');
-    return saved ? parseInt(saved, 10) : 124;
+    return saved ? parseInt(saved, 10) : 299;
   });
   
-  const [totalPurchases, setTotalPurchases] = useState(() => {
-    const saved = localStorage.getItem('total_purchases');
-    const parsed = saved ? parseInt(saved, 10) : 0;
-    return parsed > 569 ? parsed : 569;
-  });
-  
-  const [todayPurchases, setTodayPurchases] = useState(() => {
-    const savedDate = localStorage.getItem('purchases_date');
-    const currentDate = new Date().toDateString();
-    
-    if (savedDate !== currentDate) {
-      localStorage.setItem('purchases_date', currentDate);
-      return 76;
+  const [purchases, setPurchases] = useState(() => {
+    const saved = localStorage.getItem('demo_purchases_state');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.today === 'number' && typeof parsed.total === 'number') {
+          return parsed;
+        }
+      } catch (e) {}
     }
-    
-    const saved = localStorage.getItem('today_purchases');
-    const parsed = saved ? parseInt(saved, 10) : 0;
-    return parsed > 76 ? parsed : 76;
+    return { today: 126, total: 648 };
   });
+
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animateId, setAnimateId] = useState(0);
 
   // Persist to localStorage on change
   useEffect(() => {
-    localStorage.setItem('live_visitors', visitors);
+    localStorage.setItem('live_visitors', visitors.toString());
   }, [visitors]);
 
   useEffect(() => {
-    localStorage.setItem('total_purchases', totalPurchases);
-    localStorage.setItem('today_purchases', todayPurchases);
-  }, [totalPurchases, todayPurchases]);
+    localStorage.setItem('demo_purchases_state', JSON.stringify(purchases));
+  }, [purchases]);
+
+  // Handle animation class removal
+  useEffect(() => {
+    if (animateId > 0) {
+      setIsAnimating(true);
+      const timer = setTimeout(() => setIsAnimating(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [animateId]);
 
   // Visitor Counter: Fluctuates randomly to look realistic
   useEffect(() => {
     const visitorInterval = setInterval(() => {
       setVisitors(prev => {
-        // Random change between -3 and +5
         const change = Math.floor(Math.random() * 9) - 3;
         const newValue = prev + change;
-        
-        // Keep it within realistic bounds (e.g., 100 to 300)
         if (newValue < 100) return 100 + Math.floor(Math.random() * 10);
-        if (newValue > 300) return 300 - Math.floor(Math.random() * 10);
+        if (newValue > 500) return 500 - Math.floor(Math.random() * 10);
         return newValue;
       });
-    }, 2500); // Updates every 2.5 seconds
+    }, 2500);
 
     return () => clearInterval(visitorInterval);
   }, []);
 
-  // Purchase Counters: +1 every 5 minutes (300,000 ms)
+  // Purchase Counters: Exactly +1 every 30 seconds
   useEffect(() => {
     const purchaseInterval = setInterval(() => {
-      const savedDate = localStorage.getItem('purchases_date');
-      const currentDate = new Date().toDateString();
-      
-      setTotalPurchases(prev => prev + 1);
-      
-      if (savedDate !== currentDate) {
-        localStorage.setItem('purchases_date', currentDate);
-        setTodayPurchases(77);
-      } else {
-        setTodayPurchases(prev => prev + 1);
-      }
-    }, 300000);
+      setPurchases(prev => {
+        let nextTotal = prev.total + 1;
+        let nextToday = prev.today + 1;
+        
+        if (nextTotal >= 1001) {
+          nextTotal = 648;
+          nextToday = 126;
+        }
+        
+        setAnimateId(id => id + 1);
+        return { today: nextToday, total: nextTotal };
+      });
+    }, 30000);
 
     return () => clearInterval(purchaseInterval);
   }, []);
@@ -90,22 +92,38 @@ const LiveStats = () => {
           </div>
 
           <div className="stat-card">
-            <div className="stat-icon pulse-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            <div className={`stat-icon ${isAnimating ? 'animate-icon-glow' : ''}`}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <polyline points="9 13 11 15 16 10"></polyline>
+              </svg>
             </div>
             <div className="stat-content">
-              <h3 className="stat-number">{todayPurchases}</h3>
+              <h3 className="stat-number">
+                <span className={isAnimating ? 'animate-value' : ''} style={{ display: 'inline-block' }}>
+                  {purchases.today}
+                </span>
+              </h3>
               <p className="stat-label">Purchases Today</p>
             </div>
           </div>
 
           <div className="stat-card highlight-card">
-            <div className="stat-icon pulse-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <div className={`stat-icon ${isAnimating ? 'animate-icon-glow' : ''}`}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <polyline points="9 15 11 17 16 12"></polyline>
+              </svg>
             </div>
             <div className="stat-content">
-              <h3 className="stat-number">{totalPurchases}</h3>
-              <p className="stat-label">Total Verified Purchases</p>
+              <h3 className="stat-number">
+                <span className={isAnimating ? 'animate-value' : ''} style={{ display: 'inline-block' }}>
+                  {purchases.total}
+                </span>
+              </h3>
+              <p className="stat-label">Live Purchase Activity</p>
             </div>
           </div>
 
