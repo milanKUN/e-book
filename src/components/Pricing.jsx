@@ -25,16 +25,20 @@ const Pricing = () => {
         <div className="pricing-card-wrapper reveal">
           <div className="pricing-card">
             <div className="pricing-header">
-              <div className="launch-badge">SPECIAL OFFER</div>
-              <div className="price-comparison">
-                <span className="price-value-label">VALUE:</span>
-                <span className="original-price">₹{config.ORIGINAL_PRICE}</span>
+              <div className="launch-badge">🔥 TODAY'S SPECIAL OFFER</div>
+              
+              <div className="price-display-wrapper">
+                <div className="original-price-row">
+                  <span className="original-price">₹{config.ORIGINAL_PRICE}</span>
+                  <span className="discount-badge">90% OFF</span>
+                </div>
+                
+                <div className="current-price-box">
+                  <span className="current-price">₹{config.PRODUCT_PRICE}</span>
+                </div>
+                
+                <div className="payment-type">Special Price Today</div>
               </div>
-              <div className="current-price-box">
-                <span className="price-today-label">TODAY:</span>
-                <span className="current-price">₹{config.PRODUCT_PRICE}</span>
-              </div>
-              <div className="payment-type">ONE-TIME PAYMENT</div>
             </div>
 
             <div className="pricing-body">
@@ -50,7 +54,7 @@ const Pricing = () => {
 
             <div className="pricing-footer">
               <a href={config.PAYMENT_LINK || '#'} className="btn btn-primary btn-block cta-pulse">
-                GET INSTANT ACCESS — ₹{config.PRODUCT_PRICE}
+                BUY NOW — ₹{config.PRODUCT_PRICE}
               </a>
               <div className="secure-checkout-badge">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
