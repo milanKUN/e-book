@@ -10,7 +10,7 @@ export const config = {
   ORIGINAL_PRICE: "499",
 
   // URLs & Links
-  PAYMENT_LINK: "",
+  PAYMENT_LINK: "https://payments.cashfree.com/forms/guru-netra-ebook",
   THANK_YOU_URL: "",
   EBOOK_DOWNLOAD_URL: "",
 
