@@ -9,7 +9,8 @@ const LiveStats = () => {
   
   const [totalPurchases, setTotalPurchases] = useState(() => {
     const saved = localStorage.getItem('total_purchases');
-    return saved ? parseInt(saved, 10) : 50;
+    const parsed = saved ? parseInt(saved, 10) : 0;
+    return parsed > 569 ? parsed : 569;
   });
   
   const [todayPurchases, setTodayPurchases] = useState(() => {
@@ -18,11 +19,12 @@ const LiveStats = () => {
     
     if (savedDate !== currentDate) {
       localStorage.setItem('purchases_date', currentDate);
-      return 0;
+      return 76;
     }
     
     const saved = localStorage.getItem('today_purchases');
-    return saved ? parseInt(saved, 10) : 0;
+    const parsed = saved ? parseInt(saved, 10) : 0;
+    return parsed > 76 ? parsed : 76;
   });
 
   // Persist to localStorage on change
@@ -63,7 +65,7 @@ const LiveStats = () => {
       
       if (savedDate !== currentDate) {
         localStorage.setItem('purchases_date', currentDate);
-        setTodayPurchases(1);
+        setTodayPurchases(77);
       } else {
         setTodayPurchases(prev => prev + 1);
       }
