@@ -1,5 +1,5 @@
 .support-section {
-  padding-top: 120px;
+  padding-top: 180px;
   padding-bottom: 120px;
   min-height: 70vh;
   background: var(--dark-bg);
@@ -42,12 +42,13 @@
   border-radius: 20px;
   padding: 40px 30px;
   text-align: center;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .contact-card:hover {
   transform: translateY(-5px);
   border-color: rgba(255, 90, 10, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
 }
 
 .contact-icon {
@@ -56,11 +57,12 @@
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(255, 90, 10, 0.15), rgba(243, 198, 77, 0.15));
   border: 1px solid rgba(255, 90, 10, 0.2);
-  color: var(--primary);
+  color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 24px;
+  box-shadow: 0 8px 24px rgba(255, 90, 10, 0.15);
 }
 
 .contact-icon svg {
@@ -90,16 +92,18 @@
   color: #fff;
   text-decoration: none;
   background: rgba(255, 255, 255, 0.05);
-  padding: 12px 24px;
+  padding: 12px 28px;
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .contact-link:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 90, 10, 0.25);
 }
 
 .support-faq {
