@@ -6,6 +6,27 @@ import { config } from '../config';
 const PaymentSuccess = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Track Meta Pixel Purchase Event
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('order_id') || urlParams.get('cf_id') || urlParams.get('txnid') || 'generic';
+      
+      const trackingKey = `meta_purchase_tracked_${orderId}`;
+      
+      // Prevent duplicate tracking by checking sessionStorage
+      if (!sessionStorage.getItem(trackingKey)) {
+        if (window.fbq) {
+          window.fbq('track', 'Purchase', {
+            value: 99.00,
+            currency: 'INR'
+          });
+        }
+        sessionStorage.setItem(trackingKey, 'true');
+      }
+    } catch (e) {
+      console.error('Meta Pixel tracking error:', e);
+    }
   }, []);
 
   return (
