@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import LiveStats from '../components/LiveStats';
@@ -15,8 +15,10 @@ import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
 import StickyMobileCTA from '../components/StickyMobileCTA';
 import Chatbot from '../components/Chatbot';
+import CheckoutModal from '../components/CheckoutModal';
 
 const Home = () => {
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -30,7 +32,14 @@ const Home = () => {
     );
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    
+    const handleOpenCheckout = () => setIsCheckoutOpen(true);
+    window.addEventListener('open-checkout', handleOpenCheckout);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('open-checkout', handleOpenCheckout);
+    };
   }, []);
 
   return (
@@ -51,6 +60,7 @@ const Home = () => {
       <Footer />
       <StickyMobileCTA />
       <Chatbot />
+      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
     </>
   );
 };

@@ -1,13 +1,13 @@
 import { config } from '../config';
 
-export const handleCheckout = async (e, setLoadingState = null) => {
+export const handleCheckout = async (e, setLoadingState = null, customerDetails = null) => {
   if (e) e.preventDefault();
   
   if (setLoadingState) setLoadingState(true);
 
   try {
-    // Collect basic info if needed, or just send a guest request
-    const customer_details = {
+    // Ensure we have customer details
+    const finalCustomerDetails = customerDetails || {
       customer_name: "Guest",
       customer_email: "guest@example.com",
       customer_phone: "+919999999999"
@@ -16,7 +16,7 @@ export const handleCheckout = async (e, setLoadingState = null) => {
     const response = await fetch(config.CREATE_ORDER_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ customer_details })
+      body: JSON.stringify({ customer_details: finalCustomerDetails })
     });
 
     const data = await response.json();

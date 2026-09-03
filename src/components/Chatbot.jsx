@@ -176,9 +176,7 @@ const Chatbot = () => {
     const handleDynamicClick = (e) => {
       if (e.target && e.target.id === 'chatbot-checkout-btn') {
         e.preventDefault();
-        import('../utils/checkout').then(({ handleCheckout }) => {
-          handleCheckout(null); // Passing null since we don't have a local loading state here
-        });
+        window.dispatchEvent(new Event('open-checkout'));
       }
     };
     document.addEventListener('click', handleDynamicClick);

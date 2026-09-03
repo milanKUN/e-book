@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './EbookPreview.css';
 import { config } from '../config';
-import { handleCheckout } from '../utils/checkout';
 
 const EbookPreview = () => {
+  const openCheckout = (e) => {
+    e.preventDefault();
+    window.dispatchEvent(new Event('open-checkout'));
+  };
   const [activeSlide, setActiveSlide] = useState(0);
 
   const slides = [
@@ -65,7 +68,7 @@ const EbookPreview = () => {
         </div>
 
         <div className="text-center mt-5">
-          <button onClick={(e) => handleCheckout(e)} className="btn btn-primary">
+          <button onClick={openCheckout} className="btn btn-primary">
             SEE THE FULL GUIDE
           </button>
         </div>

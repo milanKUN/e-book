@@ -1,9 +1,12 @@
 import React from 'react';
 import { config } from '../config';
-import { handleCheckout } from '../utils/checkout';
 import './FinalCTA.css';
 
 const FinalCTA = () => {
+  const openCheckout = (e) => {
+    e.preventDefault();
+    window.dispatchEvent(new Event('open-checkout'));
+  };
   return (
     <section className="section section-dark final-cta-section">
       <div className="container">
@@ -34,7 +37,7 @@ const FinalCTA = () => {
           </p>
           
           <div className="cta-button-wrapper">
-            <button onClick={(e) => handleCheckout(e)} className="btn btn-primary btn-large cta-pulse" style={{border: 'none', background: 'transparent', padding: 0}}>
+            <button onClick={openCheckout} className="btn btn-primary btn-large cta-pulse" style={{border: 'none', background: 'transparent', padding: 0}}>
               <span className="btn btn-primary btn-large cta-pulse" style={{display: 'flex', alignItems: 'center', margin: 0}}>
                 <span>UNLOCK THE HIDDEN 500</span>
                 <span className="price-pill" style={{marginLeft: '10px'}}>₹{config.PRODUCT_PRICE}</span>
