@@ -17,7 +17,7 @@ const Support = () => {
         <div className="container">
           
           <div className="support-header">
-            <h1 className="support-title">How can we help?</h1>
+            <h1 className="support-title">Contact Us & Support</h1>
             <p className="support-desc">
               If you have any questions, issues with your order, or need assistance, our support team is here for you.
             </p>
@@ -51,6 +51,19 @@ const Support = () => {
                 {config.EMAIL}
               </a>
             </div>
+
+            {config.ADDRESS !== "YOUR_PHYSICAL_ADDRESS_HERE, CITY, STATE, PIN_CODE" && (
+              <div className="contact-card" style={{ gridColumn: '1 / -1', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+                <div className="contact-icon" style={{ margin: '0 auto 16px' }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <h3>Operating Address</h3>
+                <p style={{ marginBottom: 0 }}>{config.ADDRESS}</p>
+              </div>
+            )}
 
           </div>
 

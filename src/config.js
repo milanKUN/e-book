@@ -19,6 +19,7 @@ export const config = {
   PHONE_NUMBER: "+919735659798",
   WHATSAPP_NUMBER: "+919735659798",
   EMAIL: "gurunetra@gmail.com",
+  ADDRESS: "YOUR_PHYSICAL_ADDRESS_HERE, CITY, STATE, PIN_CODE", // IMPORTANT: Must be updated before Cashfree whitelisting
 
   // Sales Counter System
   SHOW_REAL_SALES_COUNTER: false,

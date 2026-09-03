@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import { config } from '../config';
 
@@ -12,6 +13,14 @@ const Footer = () => {
             <p className="footer-tagline">
               Empowering individuals with practical AI skills. Learn how to leverage modern tools to build profitable digital assets, secure high-paying clients, and future-proof your career.
             </p>
+          </div>
+
+          <div className="footer-links" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h4>Legal</h4>
+            <Link to="/privacy-policy" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Privacy Policy</Link>
+            <Link to="/terms" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Terms & Conditions</Link>
+            <Link to="/refund-policy" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Refund & Cancellation</Link>
+            <Link to="/support" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Contact Us</Link>
           </div>
 
 

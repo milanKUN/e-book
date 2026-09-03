@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Support from './pages/Support';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
+import RefundPolicy from './pages/RefundPolicy';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -20,6 +23,9 @@ function App() {
         <Route path="/payment success" element={<Navigate to="/payment-success" replace />} />
         
         <Route path="/support" element={<Support />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
         
         {/* Catch-all 404 Route */}
         <Route path="*" element={
