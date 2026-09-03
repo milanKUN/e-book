@@ -9,8 +9,9 @@ export const config = {
   PRODUCT_PRICE: "99",
   ORIGINAL_PRICE: "999",
 
-  // URLs & Links
-  PAYMENT_LINK: "https://payments.cashfree.com/forms/guru-netra-ebook",
+  // Payment Configuration
+  CASHFREE_ENV: "sandbox", // Switch to "production" when going live
+  CREATE_ORDER_ENDPOINT: "/.netlify/functions/create-cashfree-order",
   THANK_YOU_URL: "",
   EBOOK_DOWNLOAD_URL: "",
 

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { config } from '../config';
+import { handleCheckout } from '../utils/checkout';
 import './Pricing.css';
 
 const Pricing = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
   const features = [
     "Instant Digital Access",
     "500 Practical Ideas",
@@ -53,9 +55,14 @@ const Pricing = () => {
             </div>
 
             <div className="pricing-footer">
-              <a href={config.PAYMENT_LINK || '#'} className="btn btn-primary btn-block cta-pulse">
-                BUY NOW — ₹{config.PRODUCT_PRICE}
-              </a>
+              <button 
+                onClick={(e) => handleCheckout(e, setIsProcessing)}
+                disabled={isProcessing}
+                className="btn btn-primary btn-block cta-pulse"
+                style={{ border: 'none', opacity: isProcessing ? 0.7 : 1, cursor: isProcessing ? 'wait' : 'pointer' }}
+              >
+                {isProcessing ? 'PROCESSING...' : `BUY NOW — ₹${config.PRODUCT_PRICE}`}
+              </button>
               <div className="secure-checkout-badge">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Secure Checkout

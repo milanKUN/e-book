@@ -1,5 +1,6 @@
 import React from 'react';
 import { config } from '../config';
+import { handleCheckout } from '../utils/checkout';
 import './FinalCTA.css';
 
 const FinalCTA = () => {
@@ -33,10 +34,12 @@ const FinalCTA = () => {
           </p>
           
           <div className="cta-button-wrapper">
-            <a href={config.PAYMENT_LINK || '#'} className="btn btn-primary btn-large cta-pulse">
-              <span>UNLOCK THE HIDDEN 500</span>
-              <span className="price-pill">₹{config.PRODUCT_PRICE}</span>
-            </a>
+            <button onClick={(e) => handleCheckout(e)} className="btn btn-primary btn-large cta-pulse" style={{border: 'none', background: 'transparent', padding: 0}}>
+              <span className="btn btn-primary btn-large cta-pulse" style={{display: 'flex', alignItems: 'center', margin: 0}}>
+                <span>UNLOCK THE HIDDEN 500</span>
+                <span className="price-pill" style={{marginLeft: '10px'}}>₹{config.PRODUCT_PRICE}</span>
+              </span>
+            </button>
             <p className="mt-3 text-muted small-text">Instant Digital Access</p>
           </div>
         </div>

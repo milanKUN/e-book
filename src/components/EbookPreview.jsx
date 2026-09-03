@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './EbookPreview.css';
 import { config } from '../config';
+import { handleCheckout } from '../utils/checkout';
 
 const EbookPreview = () => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -64,9 +65,9 @@ const EbookPreview = () => {
         </div>
 
         <div className="text-center mt-5">
-          <a href={config.PAYMENT_LINK} className="btn btn-primary">
+          <button onClick={(e) => handleCheckout(e)} className="btn btn-primary">
             SEE THE FULL GUIDE
-          </a>
+          </button>
         </div>
       </div>
     </section>

@@ -130,7 +130,7 @@ const Chatbot = () => {
         followUps: ["💳 What if my payment fails?", "What happens after payment?"]
       },
       "👉 GET THE GUIDE — ₹99": {
-        text: "Absolutely! 🚀\n\nYou can get the ChatGPT Income Guide here:\n\n👉 <a href='" + (config.PAYMENT_LINK || '#') + "' target='_blank'>Click here to purchase securely</a>\n\nCurrent price: ₹" + config.PRODUCT_PRICE + "\n\nAfter successful payment, you'll receive digital access according to the configured delivery system.",
+        text: "Absolutely! 🚀\n\nYou can get the ChatGPT Income Guide here:\n\n👉 <button id='chatbot-checkout-btn' class='btn btn-primary' style='border:none; cursor:pointer;'>Click here to purchase securely</button>\n\nCurrent price: ₹" + config.PRODUCT_PRICE + "\n\nAfter successful payment, you'll receive digital access.",
         followUps: ["What happens after payment?", "💳 What if my payment fails?"]
       },
       // Fallback aliases mapping exactly to script if they aren't explicitly typed above
@@ -170,6 +170,20 @@ const Chatbot = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  // Handle dynamic checkout button clicks inside dangerouslySetInnerHTML
+  useEffect(() => {
+    const handleDynamicClick = (e) => {
+      if (e.target && e.target.id === 'chatbot-checkout-btn') {
+        e.preventDefault();
+        import('../utils/checkout').then(({ handleCheckout }) => {
+          handleCheckout(null); // Passing null since we don't have a local loading state here
+        });
+      }
+    };
+    document.addEventListener('click', handleDynamicClick);
+    return () => document.removeEventListener('click', handleDynamicClick);
+  }, []);
 
   const handleInputChange = (e) => {
     const val = e.target.value;
