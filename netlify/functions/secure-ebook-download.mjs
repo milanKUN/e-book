@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+// Removed unused fs and path imports
 import crypto from 'crypto';
 
 /**
@@ -63,35 +62,24 @@ export const handler = async (event, context) => {
       };
     }
 
-    // Token is strictly valid and not expired. Serve the secure PDF.
+    // Token is strictly valid and not expired.
     
-    // Netlify functions runtime environment packs included files relative to process.cwd() or __dirname
-    // For netlify/secure-data/ebook.pdf defined in netlify.toml included_files:
-    let pdfPath = path.resolve(process.env.LAMBDA_TASK_ROOT || process.cwd(), 'netlify/secure-data/ebook.pdf');
+    // Read the Google Drive URL from environment variables
+    const googleDriveUrl = process.env.EBOOK_GOOGLE_DRIVE_URL;
     
-    // Fallback for local dev
-    if (!fs.existsSync(pdfPath)) {
-      pdfPath = path.resolve(__dirname, '../../netlify/secure-data/ebook.pdf');
-    }
-    
-    if (!fs.existsSync(pdfPath)) {
-      console.error(`Ebook PDF not found at path: ${pdfPath}`);
-      return { statusCode: 500, body: 'Internal Server Error: Ebook file is missing.' };
+    if (!googleDriveUrl) {
+      console.error('CRITICAL: EBOOK_GOOGLE_DRIVE_URL environment variable is missing.');
+      return { statusCode: 500, body: 'Internal Server Error: Ebook link is not configured.' };
     }
 
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    
+    // Redirect the user to the Google Drive file
     return {
-      statusCode: 200,
+      statusCode: 302,
       headers: {
-        'Content-Type': 'application/pdf',
-        // Instruct browser to download the file rather than displaying it inline
-        'Content-Disposition': 'attachment; filename="ChatGPT_Income_Guide.pdf"',
-        'Content-Length': pdfBuffer.length.toString()
+        Location: googleDriveUrl,
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
-      // When returning binary data in Netlify Functions, it must be base64 encoded
-      body: pdfBuffer.toString('base64'),
-      isBase64Encoded: true
+      body: 'Redirecting to secure download...'
     };
 
   } catch (error) {

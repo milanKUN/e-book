@@ -19,6 +19,7 @@ In your Netlify Dashboard (Site Settings > Environment Variables), you MUST add 
 - `CASHFREE_ENVIRONMENT`: `sandbox` (for testing) or `production`
 - `EBOOK_DOWNLOAD_SECRET`: A long, random secure string (e.g. `gurunetra_secure_jwt_secret_2026!@`). This is used to cryptographically sign the download links.
 - `SITE_URL`: Your live site URL (e.g., `https://gurunetra.com`)
+- `EBOOK_GOOGLE_DRIVE_URL`: The direct link to your eBook file on Google Drive (e.g., `https://drive.google.com/file/d/.../view?usp=sharing`). Make sure the Google Drive link is set to **"Anyone with the link can view"**.
 
 > **IMPORTANT:** The `CASHFREE_SECRET_KEY` must remain server-side. It is NEVER exposed to the React frontend or Git repository.
 
@@ -42,11 +43,13 @@ To ensure Cashfree can securely notify the backend of successful payments, confi
 3. Ensure the `SITE_URL` is exactly `https://gurunetra.com`.
 4. Trigger a new deploy in Netlify.
 
-### F. Ebook File Configuration
-Currently, there is a placeholder PDF located at:
-`netlify/secure-data/ebook.pdf`
-
-**BEFORE GOING LIVE:** You must replace this file with the actual PDF of your ebook. Do not place the PDF inside the `public/` directory, as that would make it accessible to anyone on the internet. Netlify is configured to securely bundle the `netlify/secure-data/` folder into the serverless backend.
+### F. Google Drive Ebook Delivery
+Instead of hosting the PDF file on the server, the application redirects successful buyers securely to a Google Drive file.
+**Configuration:**
+1. Open your eBook PDF in Google Drive.
+2. Right-click the file and click "Share" -> "Copy link".
+3. Ensure the access setting is **"Anyone with the link can view"**.
+4. Set the copied link as the `EBOOK_GOOGLE_DRIVE_URL` in your Netlify Environment Variables.
 
 ### G. Secure Download Behavior
 When a customer lands on the Success page:
@@ -54,7 +57,7 @@ When a customer lands on the Success page:
 2. The backend directly asks Cashfree if the order was paid.
 3. If paid, the backend uses `EBOOK_DOWNLOAD_SECRET` to sign a short-lived JSON Web Token (valid for 60 minutes).
 4. The customer clicks "Download Ebook", passing the token to `secure-ebook-download.mjs`.
-5. The backend validates the signature and expiration. If valid, it reads the hidden PDF and streams it to the user.
+5. The backend validates the signature and expiration. If valid, it dynamically redirects (`HTTP 302`) the user to the actual Google Drive URL.
 
 ### H. Known Limitations (No Database)
 Because this architecture operates entirely without a database:
