@@ -1,13 +1,5 @@
 import { config } from '../config';
 
-let cashfree;
-// Initialize Cashfree SDK
-if (window.Cashfree) {
-  cashfree = window.Cashfree({
-    mode: config.CASHFREE_ENV || "sandbox"
-  });
-}
-
 export const handleCheckout = async (e, setLoadingState = null) => {
   if (e) e.preventDefault();
   
@@ -33,9 +25,11 @@ export const handleCheckout = async (e, setLoadingState = null) => {
       throw new Error(data.error || 'Failed to initiate payment');
     }
 
-    if (!cashfree) {
-      cashfree = window.Cashfree({ mode: config.CASHFREE_ENV || "sandbox" });
-    }
+    // Dynamically initialize Cashfree SDK using the ACTUAL environment the backend used.
+    // This strictly prevents sandbox/production mismatches.
+    const cashfree = window.Cashfree({ 
+      mode: data.environment || "sandbox" 
+    });
 
     // Launch Cashfree Checkout
     cashfree.checkout({

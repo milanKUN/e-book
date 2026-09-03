@@ -74,7 +74,8 @@ export const handler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         payment_session_id: data.payment_session_id,
-        order_id: data.order_id
+        order_id: data.order_id,
+        environment: env
       })
     };
 
