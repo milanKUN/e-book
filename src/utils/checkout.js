@@ -30,7 +30,7 @@ export const handleCheckout = async (e, setLoadingState = null, customerDetails 
 
   } catch (error) {
     console.error('Checkout Error:', error);
-    alert('Payment initiation failed. Please try again later.');
+    alert(error.message || 'Payment initiation failed. Please try again later.');
   } finally {
     if (setLoadingState) setLoadingState(false);
   }

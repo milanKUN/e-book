@@ -32,7 +32,10 @@ export const handler = async (event) => {
       customer_name: customer_details?.customer_name || "Customer",
       customer_email: customer_details?.customer_email || "no-reply@gurunetra.com",
       customer_mobile: mobile,
-      redirect_url: `${siteUrl}/payment-success?client_txn_id=${orderId}`
+      redirect_url: `${siteUrl}/payment-success?client_txn_id=${orderId}`,
+      udf1: "",
+      udf2: "",
+      udf3: ""
     };
 
     const response = await fetch('https://api.ekqr.in/api/create_order', {
