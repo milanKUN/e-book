@@ -175,7 +175,7 @@ const CheckoutModal = ({ isOpen, onClose }) => {
                 Waiting for payment confirmation. Do not close this window.
               </p>
               
-              {isMobile && paymentData.upi_intent ? (
+              {paymentData.upi_intent ? (
                 <div className="upi-apps-grid">
                   {paymentData.upi_intent.gpay_link && (
                     <a href={paymentData.upi_intent.gpay_link} className="upi-btn gpay">
