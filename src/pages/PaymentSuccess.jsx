@@ -20,6 +20,9 @@ const PaymentSuccess = () => {
       return;
     }
 
+    let isMounted = true;
+    let pollInterval = null;
+
     const verifyPayment = async () => {
       try {
         const response = await fetch('/.netlify/functions/verify-ekqr-payment', {
@@ -30,37 +33,65 @@ const PaymentSuccess = () => {
         
         const data = await response.json();
         
+        if (!isMounted) return;
+
         if (response.ok) {
-          setStatus(data.status); // SUCCESS, PENDING, FAILED
-          if (data.status === 'SUCCESS' && data.download_token) {
-            setDownloadToken(data.download_token);
+          if (data.status === 'SUCCESS' || data.status === 'FAILED') {
+            setStatus(data.status); // SUCCESS, FAILED
+            if (pollInterval) clearInterval(pollInterval);
             
-            // Fire Meta Pixel tracking only once per successful order
-            const trackingKey = `meta_purchase_tracked_${orderId}`;
-            if (!sessionStorage.getItem(trackingKey)) {
-              if (window.fbq) {
-                window.fbq('track', 'Purchase', {
-                  value: 99.00,
-                  currency: 'INR'
-                });
+            if (data.status === 'SUCCESS' && data.download_token) {
+              setDownloadToken(data.download_token);
+              
+              // Fire Meta Pixel tracking only once per successful order
+              const trackingKey = `meta_purchase_tracked_${orderId}`;
+              if (!sessionStorage.getItem(trackingKey)) {
+                if (window.fbq) {
+                  window.fbq('track', 'Purchase', {
+                    value: 99.00,
+                    currency: 'INR'
+                  });
+                }
+                sessionStorage.setItem(trackingKey, 'true');
               }
-              sessionStorage.setItem(trackingKey, 'true');
+            } else if (data.status === 'FAILED') {
+              setErrorMessage(data.message || 'Payment verification failed.');
             }
-          } else if (data.status === 'FAILED') {
-            setErrorMessage(data.message || 'Payment verification failed.');
+          } else {
+            // PENDING or other
+            setStatus('VERIFYING'); // Keep showing verifying spinner while polling
           }
         } else {
           setStatus('FAILED');
           setErrorMessage(data.error || 'Failed to connect to verification server.');
+          if (pollInterval) clearInterval(pollInterval);
         }
       } catch (error) {
         console.error('Verification error:', error);
-        setStatus('FAILED');
-        setErrorMessage('A network error occurred while verifying your payment.');
+        // Only set failed on hard errors, otherwise keep polling
       }
     };
 
+    // Initial check
     verifyPayment();
+    
+    // Poll every 3 seconds
+    pollInterval = setInterval(verifyPayment, 3000);
+    
+    // Timeout after 3 minutes
+    const timeout = setTimeout(() => {
+      if (isMounted && pollInterval) {
+        clearInterval(pollInterval);
+        setStatus('FAILED');
+        setErrorMessage('Verification timed out. If your money was deducted, please contact support.');
+      }
+    }, 180000);
+
+    return () => {
+      isMounted = false;
+      if (pollInterval) clearInterval(pollInterval);
+      clearTimeout(timeout);
+    };
   }, [searchParams]);
 
   return (

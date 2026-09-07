@@ -201,14 +201,14 @@ const CheckoutModal = ({ isOpen, onClose }) => {
                     </a>
                   )}
                   <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <a href={paymentData.payment_url} className="fallback-payment-link">
+                    <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="fallback-payment-link">
                       Other Payment Methods
                     </a>
                   </div>
                 </div>
               ) : (
                 <div style={{ textAlign: 'center' }}>
-                  <a href={paymentData.payment_url} className="btn btn-primary checkout-submit-btn" style={{ textDecoration: 'none', display: 'block' }}>
+                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary checkout-submit-btn" style={{ textDecoration: 'none', display: 'block' }}>
                     PROCEED TO PAYMENT
                   </a>
                   <p style={{ marginTop: '12px', fontSize: '0.85rem', color: '#666' }}>
