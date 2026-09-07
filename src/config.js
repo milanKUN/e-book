@@ -10,8 +10,7 @@ export const config = {
   ORIGINAL_PRICE: "999",
 
   // Payment Configuration
-  CASHFREE_ENV: "sandbox", // Switch to "production" when going live
-  CREATE_ORDER_ENDPOINT: "/.netlify/functions/create-cashfree-order",
+  CREATE_ORDER_ENDPOINT: "/.netlify/functions/create-ekqr-order",
   THANK_YOU_URL: "",
   EBOOK_DOWNLOAD_URL: "",
 

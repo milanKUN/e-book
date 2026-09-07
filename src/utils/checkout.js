@@ -21,21 +21,12 @@ export const handleCheckout = async (e, setLoadingState = null, customerDetails 
 
     const data = await response.json();
 
-    if (!response.ok || !data.payment_session_id) {
+    if (!response.ok || !data.payment_url) {
       throw new Error(data.error || 'Failed to initiate payment');
     }
 
-    // Dynamically initialize Cashfree SDK using the ACTUAL environment the backend used.
-    // This strictly prevents sandbox/production mismatches.
-    const cashfree = window.Cashfree({ 
-      mode: data.environment || "sandbox" 
-    });
-
-    // Launch Cashfree Checkout
-    cashfree.checkout({
-      paymentSessionId: data.payment_session_id,
-      redirectTarget: "_self" // Redirects the current page to the success URL
-    });
+    // Redirect to EKQR payment page
+    window.location.href = data.payment_url;
 
   } catch (error) {
     console.error('Checkout Error:', error);

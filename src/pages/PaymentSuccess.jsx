@@ -12,20 +12,20 @@ const PaymentSuccess = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const orderId = searchParams.get('order_id') || searchParams.get('cf_id');
+    const orderId = searchParams.get('client_txn_id');
     
     if (!orderId) {
       setStatus('FAILED');
-      setErrorMessage('No order ID found in the URL. If you made a payment, please contact support.');
+      setErrorMessage('No transaction ID found in the URL. If you made a payment, please contact support.');
       return;
     }
 
     const verifyPayment = async () => {
       try {
-        const response = await fetch('/.netlify/functions/verify-cashfree-payment', {
+        const response = await fetch('/.netlify/functions/verify-ekqr-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ order_id: orderId })
+          body: JSON.stringify({ client_txn_id: orderId })
         });
         
         const data = await response.json();
