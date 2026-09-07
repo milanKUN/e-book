@@ -12,7 +12,7 @@ export const handler = async (event) => {
     const ekqrKey = process.env.EKQR_API_KEY || 'd983043b-26f6-4b9b-9901-78a72303b5ac';
 
     const orderId = `txn_${crypto.randomBytes(8).toString('hex')}`;
-    const amount = "99"; // Server-side validated exact price.
+    const amount = "1"; // Server-side validated exact price.
 
     // Get the site URL for return
     const siteUrl = process.env.SITE_URL || 'https://gurunetra.com';
