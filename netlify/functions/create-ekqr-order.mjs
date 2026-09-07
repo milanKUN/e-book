@@ -63,7 +63,8 @@ export const handler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         payment_url: data.data.payment_url,
-        order_id: orderId
+        order_id: orderId,
+        upi_intent: data.data.upi_intent || null
       })
     };
 

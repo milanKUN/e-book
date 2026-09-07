@@ -25,12 +25,13 @@ export const handleCheckout = async (e, setLoadingState = null, customerDetails 
       throw new Error(data.error || 'Failed to initiate payment');
     }
 
-    // Redirect to EKQR payment page
-    window.location.href = data.payment_url;
+    // Return data to caller instead of automatically redirecting
+    return data;
 
   } catch (error) {
     console.error('Checkout Error:', error);
     alert(error.message || 'Payment initiation failed. Please try again later.');
+    return null;
   } finally {
     if (setLoadingState) setLoadingState(false);
   }
