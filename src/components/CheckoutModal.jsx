@@ -200,6 +200,16 @@ const CheckoutModal = ({ isOpen, onClose }) => {
                       Pay with Any UPI App
                     </a>
                   )}
+                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="upi-btn qrcode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="upi-icon" style={{width: '24px', stroke: 'white'}}>
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                      <path d="M9 3v7M14 10h7M10 14v7M14 21h7M21 14v7"></path>
+                    </svg>
+                    Pay with QR Code
+                  </a>
                   <div style={{ textAlign: 'center', marginTop: '16px' }}>
                     <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="fallback-payment-link">
                       Other Payment Methods
