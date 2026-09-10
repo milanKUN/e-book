@@ -130,7 +130,7 @@ const Chatbot = () => {
         followUps: ["💳 What if my payment fails?", "What happens after payment?"]
       },
       "👉 GET THE GUIDE — ₹99": {
-        text: "Absolutely! 🚀\n\nYou can get the ChatGPT Income Guide here:\n\n👉 <button id='chatbot-checkout-btn' class='btn btn-primary' style='border:none; cursor:pointer;'>Click here to purchase securely</button>\n\nCurrent price: ₹" + config.PRODUCT_PRICE + "\n\nAfter successful payment, you'll receive digital access.",
+        text: "Absolutely! 🚀\n\nYou can get the ChatGPT Income Guide here:\n\n👉 <button id='chatbot-checkout-btn' class='btn btn-primary' style='border:none; cursor:pointer;' data-analytics-event='checkout_start'>Click here to purchase securely</button>\n\nCurrent price: ₹" + config.PRODUCT_PRICE + "\n\nAfter successful payment, you'll receive digital access.",
         followUps: ["What happens after payment?", "💳 What if my payment fails?"]
       },
       // Fallback aliases mapping exactly to script if they aren't explicitly typed above

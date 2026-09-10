@@ -68,7 +68,7 @@ const EbookPreview = () => {
         </div>
 
         <div className="text-center mt-5">
-          <button onClick={openCheckout} className="btn btn-primary">
+          <button onClick={openCheckout} className="btn btn-primary" data-analytics-event="checkout_start">
             SEE THE FULL GUIDE
           </button>
         </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import './PaymentSuccess.css';
 import { config } from '../config';
+import Analytics from '../analytics/tracker';
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -42,6 +43,10 @@ const PaymentSuccess = () => {
             
             if (data.status === 'SUCCESS' && data.download_token) {
               setDownloadToken(data.download_token);
+              
+              Analytics.trackEvent('payment_success', {
+                order_id: orderId
+              });
               
               // Fire Meta Pixel tracking only once per successful order
               const trackingKey = `meta_purchase_tracked_${orderId}`;

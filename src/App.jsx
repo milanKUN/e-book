@@ -1,19 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Support from './pages/Support';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsConditions from './pages/TermsConditions';
 import RefundPolicy from './pages/RefundPolicy';
+import AdminAnalytics from './pages/AdminAnalytics';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Analytics from './analytics/tracker';
+
+function AnalyticsTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    Analytics.init();
+    Analytics.trackPageView();
+  }, [location]);
+
+  return null;
+}
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <AnalyticsTracker />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
@@ -26,6 +40,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
         
         {/* Catch-all 404 Route */}
         <Route path="*" element={

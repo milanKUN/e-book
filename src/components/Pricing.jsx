@@ -61,6 +61,7 @@ const Pricing = () => {
                 onClick={openCheckout}
                 className="btn btn-primary btn-block cta-pulse"
                 style={{ border: 'none', cursor: 'pointer' }}
+                data-analytics-event="checkout_start"
               >
                 BUY NOW — ₹{config.PRODUCT_PRICE}
               </button>

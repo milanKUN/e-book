@@ -169,6 +169,7 @@ const CheckoutModal = ({ isOpen, onClose }) => {
                 type="submit" 
                 className="btn btn-primary checkout-submit-btn"
                 disabled={isProcessing}
+                data-analytics-event="form_submit"
               >
                 {isProcessing ? 'PROCESSING...' : `PAY ₹${config.PRODUCT_PRICE} SECURELY`}
               </button>
@@ -191,29 +192,29 @@ const CheckoutModal = ({ isOpen, onClose }) => {
               {paymentData.upi_intent ? (
                 <div className="upi-apps-grid">
                   {paymentData.upi_intent.gpay_link && (
-                    <a href={paymentData.upi_intent.gpay_link} className="upi-btn gpay">
+                    <a href={paymentData.upi_intent.gpay_link} className="upi-btn gpay" data-analytics-event="payment_button_click">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay" className="upi-icon" />
                       Pay with GPay
                     </a>
                   )}
                   {paymentData.upi_intent.phonepe_link && (
-                    <a href={paymentData.upi_intent.phonepe_link} className="upi-btn phonepe">
+                    <a href={paymentData.upi_intent.phonepe_link} className="upi-btn phonepe" data-analytics-event="payment_button_click">
                       <img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe" className="upi-icon" style={{ filter: 'brightness(0) invert(1)' }} />
                       Pay with PhonePe
                     </a>
                   )}
                   {paymentData.upi_intent.paytm_link && (
-                    <a href={paymentData.upi_intent.paytm_link} className="upi-btn paytm">
+                    <a href={paymentData.upi_intent.paytm_link} className="upi-btn paytm" data-analytics-event="payment_button_click">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="upi-icon" />
                       Pay with Paytm
                     </a>
                   )}
                   {paymentData.upi_intent.bhim_link && (
-                    <a href={paymentData.upi_intent.bhim_link} className="upi-btn generic">
+                    <a href={paymentData.upi_intent.bhim_link} className="upi-btn generic" data-analytics-event="payment_button_click">
                       Pay with Any UPI App
                     </a>
                   )}
-                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="upi-btn qrcode">
+                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="upi-btn qrcode" data-analytics-event="payment_button_click">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="upi-icon" style={{width: '24px', stroke: 'white'}}>
                       <rect x="3" y="3" width="7" height="7"></rect>
                       <rect x="14" y="3" width="7" height="7"></rect>
@@ -224,14 +225,14 @@ const CheckoutModal = ({ isOpen, onClose }) => {
                     Pay with QR Code
                   </a>
                   <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="fallback-payment-link">
+                    <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="fallback-payment-link" data-analytics-event="payment_button_click">
                       Other Payment Methods
                     </a>
                   </div>
                 </div>
               ) : (
                 <div style={{ textAlign: 'center' }}>
-                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary checkout-submit-btn" style={{ textDecoration: 'none', display: 'block' }}>
+                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary checkout-submit-btn" style={{ textDecoration: 'none', display: 'block' }} data-analytics-event="payment_button_click">
                     PROCEED TO PAYMENT
                   </a>
                   <p style={{ marginTop: '12px', fontSize: '0.85rem', color: '#666' }}>
