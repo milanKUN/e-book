@@ -6,7 +6,7 @@ export const config = {
   COVER_IMAGE: "/ebook-cover.jpg",
 
   // Pricing
-  PRODUCT_PRICE: "1",
+  PRODUCT_PRICE: "90",
   ORIGINAL_PRICE: "999",
 
   // Payment Configuration
