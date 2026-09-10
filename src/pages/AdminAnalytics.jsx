@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || 'https://api.gurunetra.com/api';
+const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || 'https://gurunetra.sfinteriordecoration.com/api';
+const ADMIN_API_URL = API_URL.replace(/\/api\/?$/, '/admin');
 
 const AdminAnalytics = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,7 +30,7 @@ const AdminAnalytics = () => {
   const checkAuth = async () => {
     try {
       // For cross-origin cookies in fetch, need credentials: 'include'
-      const res = await fetch(`${API_URL}/../admin/check-auth.php`, { credentials: 'include' });
+      const res = await fetch(`${ADMIN_API_URL}/check-auth.php`, { credentials: 'include' });
       if (res.ok) {
         setIsAuthenticated(true);
       } else {
@@ -46,7 +47,7 @@ const AdminAnalytics = () => {
     setIsLoggingIn(true);
     setLoginError('');
     try {
-      const res = await fetch(`${API_URL}/../admin/login.php`, {
+      const res = await fetch(`${ADMIN_API_URL}/login.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -67,7 +68,7 @@ const AdminAnalytics = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${API_URL}/../admin/overview.php?range=${dateRange}`, { credentials: 'include' });
+      const res = await fetch(`${ADMIN_API_URL}/overview.php?range=${dateRange}`, { credentials: 'include' });
       if (res.status === 401) {
         setIsAuthenticated(false);
       } else if (res.ok) {
