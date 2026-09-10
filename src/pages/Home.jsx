@@ -18,7 +18,9 @@ import Chatbot from '../components/Chatbot';
 import CheckoutModal from '../components/CheckoutModal';
 
 const Home = () => {
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(() => {
+    return !!sessionStorage.getItem('pendingPaymentData');
+  });
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

@@ -11,7 +11,13 @@ const CheckoutModal = ({ isOpen, onClose }) => {
   });
   const [errors, setErrors] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentData, setPaymentData] = useState(null);
+  const [paymentData, setPaymentData] = useState(() => {
+    const saved = sessionStorage.getItem('pendingPaymentData');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { return null; }
+    }
+    return null;
+  });
   const pollIntervalRef = useRef(null);
 
   // Poll for payment success when paymentData is set
@@ -41,6 +47,12 @@ const CheckoutModal = ({ isOpen, onClose }) => {
   }, [paymentData]);
 
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    sessionStorage.removeItem('pendingPaymentData');
+    setPaymentData(null);
+    onClose();
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -76,6 +88,7 @@ const CheckoutModal = ({ isOpen, onClose }) => {
     });
     
     if (data) {
+      sessionStorage.setItem('pendingPaymentData', JSON.stringify(data));
       setPaymentData(data);
     }
   };
@@ -84,11 +97,11 @@ const CheckoutModal = ({ isOpen, onClose }) => {
 
 
   return (
-    <div className="checkout-modal-overlay" onClick={onClose}>
+    <div className="checkout-modal-overlay">
       <div className="checkout-modal-content" onClick={e => e.stopPropagation()}>
         <div className="checkout-modal-header">
           <h3>Secure Checkout</h3>
-          <button className="checkout-modal-close" onClick={onClose}>
+          <button className="checkout-modal-close" onClick={handleClose}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
