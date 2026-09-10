@@ -16,8 +16,11 @@ function AnalyticsTracker() {
   const location = useLocation();
 
   useEffect(() => {
-    Analytics.init();
-    Analytics.trackPageView();
+    if (!Analytics.isInitialized) {
+      Analytics.init();
+    } else {
+      Analytics.trackPageView();
+    }
   }, [location]);
 
   return null;
