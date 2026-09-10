@@ -1,7 +1,7 @@
 // src/analytics/tracker.js
 
 // Using Vite environment variables
-const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || 'https://api.gurunetra.com/api';
+const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || 'https://gurunetra.sfinteriordecoration.com/api';
 
 /**
  * Generate a random unique ID
