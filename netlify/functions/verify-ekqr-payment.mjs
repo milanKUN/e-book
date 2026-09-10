@@ -56,8 +56,8 @@ export const handler = async (event) => {
       // 1. Verify the amount matches ₹99 exactly (from the backend perspective)
       // EKQR returns amount as an integer or string.
       const paidAmount = parseFloat(data.data.amount);
-      if (paidAmount < 90) {
-        console.error(`Amount mismatch. Expected 90, got ${paidAmount}`);
+      if (paidAmount < 99) {
+        console.error(`Amount mismatch. Expected 99, got ${paidAmount}`);
         return { 
           statusCode: 200, 
           body: JSON.stringify({ status: 'FAILED', message: 'Partial payment received. Please contact support.' }) 
