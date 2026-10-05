@@ -89,7 +89,7 @@ const CheckoutModal = ({ isOpen, onClose }) => {
 
     setIsProcessing(true);
     
-    const upiString = `pa=paytmqr15apve1o8b@paytm&pn=Guru%20Netra&am=${config.PRODUCT_PRICE}.00&cu=INR`;
+    const upiString = `pa=milankundu2003-5@oksbi&pn=Guru%20Netra&am=${config.PRODUCT_PRICE}.00&cu=INR`;
     
     const manualData = {
       is_manual: true,
