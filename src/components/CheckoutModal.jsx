@@ -22,6 +22,11 @@ const CheckoutModal = ({ isOpen, onClose }) => {
 
   // Poll for payment success when paymentData is set
   useEffect(() => {
+    // If it's a manual payment, we don't poll
+    if (paymentData && paymentData.is_manual) {
+      return;
+    }
+    
     if (paymentData && paymentData.order_id) {
       pollIntervalRef.current = setInterval(async () => {
         try {
@@ -76,24 +81,38 @@ const CheckoutModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // Trigger the checkout process with actual user data
-    const data = await handleCheckout(e, setIsProcessing, {
-      customer_name: formData.name.trim(),
-      customer_email: formData.email.trim(),
-      customer_phone: formData.phone.trim().startsWith('+') ? formData.phone.trim() : `+91${formData.phone.trim()}`
-    });
+    setIsProcessing(true);
     
-    if (data) {
-      sessionStorage.setItem('pendingPaymentData', JSON.stringify(data));
-      setPaymentData(data);
+    const upiString = `pa=9735659798@jio&pn=Guru%20Netra&am=${config.PRODUCT_PRICE}.00&cu=INR`;
+    
+    const manualData = {
+      is_manual: true,
+      email: formData.email,
+      name: formData.name,
+      upi_intent: {
+        gpay_link: `gpay://upi/pay?${upiString}`,
+        phonepe_link: `phonepe://pay?${upiString}`,
+        paytm_link: `paytmmp://pay?${upiString}`,
+        bhim_link: `upi://pay?${upiString}`
+      },
+      payment_url: `upi://pay?${upiString}`
+    };
+
+    sessionStorage.setItem('pendingPaymentData', JSON.stringify(manualData));
+    setPaymentData(manualData);
+    setIsProcessing(false);
+
+    // Auto-redirect on mobile
+    if (isMobile) {
+      window.location.href = `upi://pay?${upiString}`;
     }
   };
-
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 
   return (
@@ -186,60 +205,52 @@ const CheckoutModal = ({ isOpen, onClose }) => {
             <div className="payment-options-container">
               <h4 style={{ textAlign: 'center', marginBottom: '8px', color: '#333' }}>Complete your payment</h4>
               <p style={{ textAlign: 'center', marginBottom: '20px', fontSize: '0.9rem', color: '#666' }}>
-                Waiting for payment confirmation. Do not close this window.
+                Please complete the ₹{config.PRODUCT_PRICE} payment using any UPI app.
               </p>
               
-              {paymentData.upi_intent ? (
-                <div className="upi-apps-grid">
-                  {paymentData.upi_intent.gpay_link && (
-                    <a href={paymentData.upi_intent.gpay_link} className="upi-btn gpay" data-analytics-event="payment_button_click">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay" className="upi-icon" />
-                      Pay with GPay
-                    </a>
-                  )}
-                  {paymentData.upi_intent.phonepe_link && (
-                    <a href={paymentData.upi_intent.phonepe_link} className="upi-btn phonepe" data-analytics-event="payment_button_click">
-                      <img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe" className="upi-icon" style={{ filter: 'brightness(0) invert(1)' }} />
-                      Pay with PhonePe
-                    </a>
-                  )}
-                  {paymentData.upi_intent.paytm_link && (
-                    <a href={paymentData.upi_intent.paytm_link} className="upi-btn paytm" data-analytics-event="payment_button_click">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="upi-icon" />
-                      Pay with Paytm
-                    </a>
-                  )}
-                  {paymentData.upi_intent.bhim_link && (
-                    <a href={paymentData.upi_intent.bhim_link} className="upi-btn generic" data-analytics-event="payment_button_click">
-                      Pay with Any UPI App
-                    </a>
-                  )}
-                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="upi-btn qrcode" data-analytics-event="payment_button_click">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="upi-icon" style={{width: '24px', stroke: 'white'}}>
-                      <rect x="3" y="3" width="7" height="7"></rect>
-                      <rect x="14" y="3" width="7" height="7"></rect>
-                      <rect x="14" y="14" width="7" height="7"></rect>
-                      <rect x="3" y="14" width="7" height="7"></rect>
-                      <path d="M9 3v7M14 10h7M10 14v7M14 21h7M21 14v7"></path>
-                    </svg>
-                    Pay with QR Code
+              <div className="upi-apps-grid">
+                {paymentData.upi_intent.gpay_link && (
+                  <a href={paymentData.upi_intent.gpay_link} className="upi-btn gpay" data-analytics-event="payment_button_click">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay" className="upi-icon" />
+                    Pay with GPay
                   </a>
-                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="fallback-payment-link" data-analytics-event="payment_button_click">
-                      Other Payment Methods
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center' }}>
-                  <a href={paymentData.payment_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary checkout-submit-btn" style={{ textDecoration: 'none', display: 'block' }} data-analytics-event="payment_button_click">
-                    PROCEED TO PAYMENT
+                )}
+                {paymentData.upi_intent.phonepe_link && (
+                  <a href={paymentData.upi_intent.phonepe_link} className="upi-btn phonepe" data-analytics-event="payment_button_click">
+                    <img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe" className="upi-icon" style={{ filter: 'brightness(0) invert(1)' }} />
+                    PhonePe
                   </a>
-                  <p style={{ marginTop: '12px', fontSize: '0.85rem', color: '#666' }}>
-                    You will be redirected to our secure payment gateway to complete your purchase using any UPI app or card.
-                  </p>
-                </div>
-              )}
+                )}
+                {paymentData.upi_intent.paytm_link && (
+                  <a href={paymentData.upi_intent.paytm_link} className="upi-btn paytm" data-analytics-event="payment_button_click">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="upi-icon" />
+                    Paytm
+                  </a>
+                )}
+                <a href={paymentData.upi_intent.bhim_link} className="upi-btn generic" data-analytics-event="payment_button_click">
+                  Any UPI App
+                </a>
+              </div>
+              
+              <div style={{ marginTop: '25px', padding: '15px', background: '#e8f5e9', borderRadius: '8px', border: '1px solid #c8e6c9', textAlign: 'center' }}>
+                <h5 style={{ margin: '0 0 10px 0', color: '#2e7d32' }}>Step 2: Get Your eBook</h5>
+                <p style={{ margin: '0 0 15px 0', fontSize: '0.85rem', color: '#1b5e20' }}>
+                  After successful payment, click below to send a screenshot on WhatsApp and receive your eBook immediately.
+                </p>
+                <a 
+                  href={`https://wa.me/919735659798?text=Hello,%20I%20have%20paid%20Rs%20${config.PRODUCT_PRICE}%20for%20the%20ChatGPT%20Income%20Guide.%20My%20email%20is%20${paymentData.email}%20and%20name%20is%20${paymentData.name}.%20Please%20send%20the%20eBook.`}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-primary" 
+                  style={{ width: '100%', background: '#25D366', color: 'white', textDecoration: 'none' }}
+                  data-analytics-event="whatsapp_verification_click"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '8px' }}>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                  </svg>
+                  I HAVE PAID, GET EBOOK
+                </a>
+              </div>
             </div>
           )}
         </div>
