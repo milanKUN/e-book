@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { config } from '../config';
+import { usePricing } from '../hooks/usePricing';
 import './Header.css';
 
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+  const { price, originalPrice } = usePricing();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,19 +52,19 @@ const Header = () => {
           <div className="header-marquee">
             <span>
               <span className="pulse-icon">🔥</span> 
-              <strong>Today's Offer:</strong> Get the guide for ₹{config.PRODUCT_PRICE} <strike className="strike-price">₹{config.ORIGINAL_PRICE}</strike>
+              <strong>Today's Offer:</strong> Get the guide for ₹{price} <strike className="strike-price">₹{originalPrice}</strike>
             </span>
             <span>
               <span className="pulse-icon">🔥</span> 
-              <strong>Today's Offer:</strong> Get the guide for ₹{config.PRODUCT_PRICE} <strike className="strike-price">₹{config.ORIGINAL_PRICE}</strike>
+              <strong>Today's Offer:</strong> Get the guide for ₹{price} <strike className="strike-price">₹{originalPrice}</strike>
             </span>
             <span>
               <span className="pulse-icon">🔥</span> 
-              <strong>Today's Offer:</strong> Get the guide for ₹{config.PRODUCT_PRICE} <strike className="strike-price">₹{config.ORIGINAL_PRICE}</strike>
+              <strong>Today's Offer:</strong> Get the guide for ₹{price} <strike className="strike-price">₹{originalPrice}</strike>
             </span>
             <span>
               <span className="pulse-icon">🔥</span> 
-              <strong>Today's Offer:</strong> Get the guide for ₹{config.PRODUCT_PRICE} <strike className="strike-price">₹{config.ORIGINAL_PRICE}</strike>
+              <strong>Today's Offer:</strong> Get the guide for ₹{price} <strike className="strike-price">₹{originalPrice}</strike>
             </span>
           </div>
         </div>

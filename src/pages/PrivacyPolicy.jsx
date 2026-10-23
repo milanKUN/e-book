@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
           <br/>
 
           <h3>2. Payment Processing</h3>
-          <p>All payments are securely processed by Cashfree, our third-party payment gateway. We do not store, process, or have access to your credit card, debit card, or UPI PIN details on our servers.</p>
+          <p>All payments are securely processed by Razorpay, our third-party payment gateway. We do not store, process, or have access to your credit card, debit card, or UPI PIN details on our servers.</p>
           <br/>
 
           <h3>3. Use of Information</h3>
@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
           <br/>
 
           <h3>4. Data Sharing</h3>
-          <p>We respect your privacy. We do not sell, rent, or trade your personal information with third parties. Your data is only shared with our payment gateway (Cashfree) strictly for the purpose of processing your transaction securely.</p>
+          <p>We respect your privacy. We do not sell, rent, or trade your personal information with third parties. Your data is only shared with our payment gateway (Razorpay) strictly for the purpose of processing your transaction securely.</p>
           <br/>
 
           <h3>5. Cookies</h3>

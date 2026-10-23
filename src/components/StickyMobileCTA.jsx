@@ -1,8 +1,9 @@
 import React from 'react';
 import './StickyMobileCTA.css';
-import { config } from '../config';
+import { usePricing } from '../hooks/usePricing';
 
 const StickyMobileCTA = () => {
+  const { price, originalPrice } = usePricing();
   const openCheckout = (e) => {
     e.preventDefault();
     window.dispatchEvent(new Event('open-checkout'));
@@ -11,8 +12,8 @@ const StickyMobileCTA = () => {
   return (
     <div className="sticky-mobile-cta">
       <button onClick={openCheckout} className="btn btn-primary btn-block" style={{ border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} data-analytics-event="checkout_start">
-        <span>GET THE GUIDE — ₹{config.PRODUCT_PRICE}</span>
-        <strike style={{ opacity: 0.7, fontSize: '0.85em', fontWeight: 'normal' }}>₹{config.ORIGINAL_PRICE}</strike>
+        <span>GET THE GUIDE — ₹{price}</span>
+        <strike style={{ opacity: 0.7, fontSize: '0.85em', fontWeight: 'normal' }}>₹{originalPrice}</strike>
       </button>
     </div>
   );

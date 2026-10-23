@@ -11,6 +11,14 @@ import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Analytics from './analytics/tracker';
+import { usePricing } from './hooks/usePricing';
+
+// Keeps config.PRODUCT_PRICE / ORIGINAL_PRICE in sync with the
+// admin-managed price (GET /api/settings) on every page.
+function PricingSync() {
+  usePricing();
+  return null;
+}
 
 function AnalyticsTracker() {
   const location = useLocation();
@@ -31,6 +39,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <AnalyticsTracker />
+      <PricingSync />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />

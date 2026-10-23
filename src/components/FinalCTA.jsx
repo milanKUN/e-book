@@ -1,8 +1,10 @@
 import React from 'react';
-import { config } from '../config';
+import { usePricing } from '../hooks/usePricing';
 import './FinalCTA.css';
 
 const FinalCTA = () => {
+  // Live price from the admin panel (GET /api/settings)
+  const { price } = usePricing();
   const openCheckout = (e) => {
     e.preventDefault();
     window.dispatchEvent(new Event('open-checkout'));
@@ -40,7 +42,7 @@ const FinalCTA = () => {
             <button onClick={openCheckout} className="btn btn-primary btn-large cta-pulse" style={{border: 'none', background: 'transparent', padding: 0}} data-analytics-event="checkout_start">
               <span className="btn btn-primary btn-large cta-pulse" style={{display: 'flex', alignItems: 'center', margin: 0}}>
                 <span>UNLOCK THE HIDDEN 500</span>
-                <span className="price-pill" style={{marginLeft: '10px'}}>₹{config.PRODUCT_PRICE}</span>
+                <span className="price-pill" style={{marginLeft: '10px'}}>₹{price}</span>
               </span>
             </button>
             <p className="mt-3 text-muted small-text">Instant Digital Access</p>

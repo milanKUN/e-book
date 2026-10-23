@@ -3,9 +3,11 @@ import { Link, useSearchParams } from 'react-router-dom';
 import './PaymentSuccess.css';
 import { config } from '../config';
 import Analytics from '../analytics/tracker';
+import { usePricing } from '../hooks/usePricing';
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
+  const { price } = usePricing();
   const [status, setStatus] = useState('VERIFYING'); // VERIFYING, SUCCESS, PENDING, FAILED
   const [downloadToken, setDownloadToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -13,7 +15,7 @@ const PaymentSuccess = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const orderId = searchParams.get('client_txn_id');
+    const orderId = searchParams.get('order_id') || searchParams.get('client_txn_id');
     
     if (!orderId) {
       setStatus('FAILED');
@@ -26,10 +28,9 @@ const PaymentSuccess = () => {
 
     const verifyPayment = async () => {
       try {
-        const response = await fetch('/.netlify/functions/verify-ekqr-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ client_txn_id: orderId })
+        const response = await fetch(`${config.PAYMENT_STATUS_ENDPOINT}?order_id=${encodeURIComponent(orderId)}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
         });
         
         const data = await response.json();
@@ -44,16 +45,15 @@ const PaymentSuccess = () => {
             if (data.status === 'SUCCESS' && data.download_token) {
               setDownloadToken(data.download_token);
               
-              Analytics.trackEvent('payment_success', {
-                order_id: orderId
-              });
-              
-              // Fire Meta Pixel tracking only once per successful order
+              // Fire analytics + Meta Pixel only ONCE per successful order
               const trackingKey = `meta_purchase_tracked_${orderId}`;
               if (!sessionStorage.getItem(trackingKey)) {
+                Analytics.trackEvent('payment_success', {
+                  order_id: orderId
+                });
                 if (window.fbq) {
                   window.fbq('track', 'Purchase', {
-                    value: 99.00,
+                    value: Number(config.PRODUCT_PRICE) || 1,
                     currency: 'INR'
                   });
                 }
@@ -166,7 +166,7 @@ const PaymentSuccess = () => {
                     <div className="step-number">1</div>
                     <div className="step-text">
                       <h4>Order Processed</h4>
-                      <p>Your payment of ₹{config.PRODUCT_PRICE} was successfully captured.</p>
+                      <p>Your payment of ₹{price} was successfully captured.</p>
                     </div>
                   </div>
                   <div className="step-item">
@@ -187,7 +187,7 @@ const PaymentSuccess = () => {
 
                 <div className="success-actions-vertical">
                   {downloadToken ? (
-                    <a href={`/.netlify/functions/secure-ebook-download?token=${downloadToken}`} className="btn btn-primary btn-block mb-3" style={{ width: '100%' }}>
+                    <a href={`${config.EBOOK_DOWNLOAD_ENDPOINT}?token=${downloadToken}`} className="btn btn-primary btn-block mb-3" style={{ width: '100%' }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width: 20, height: 20, marginRight: 10}}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                       DOWNLOAD EBOOK (PDF)
                     </a>

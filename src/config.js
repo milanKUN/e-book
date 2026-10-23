@@ -5,12 +5,22 @@ export const config = {
   PRODUCT_SUBTITLE: "500 Practical AI Income Ideas",
   COVER_IMAGE: "/ebook-cover.jpg",
 
-  // Pricing
+  // Pricing — FALLBACK ONLY. The live price is managed in the admin panel
+  // (Settings page) and loaded at runtime via GET /api/settings (usePricing hook).
   PRODUCT_PRICE: "1",
   ORIGINAL_PRICE: "999",
 
-  // Payment Configuration
-  CREATE_ORDER_ENDPOINT: "/.netlify/functions/create-ekqr-order",
+  // Payment Configuration (CodeIgniter 4 backend)
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || "/api",
+  CREATE_ORDER_ENDPOINT: (import.meta.env.VITE_API_BASE_URL || "/api") + "/payments/create-order",
+  VERIFY_PAYMENT_ENDPOINT: (import.meta.env.VITE_API_BASE_URL || "/api") + "/payments/verify",
+  PAYMENT_STATUS_ENDPOINT: (import.meta.env.VITE_API_BASE_URL || "/api") + "/payments/status",
+  EBOOK_DOWNLOAD_ENDPOINT: (import.meta.env.VITE_API_BASE_URL || "/api") + "/payments/download",
+
+  // Razorpay (public key id only — secret stays on the server)
+  RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TrNBb4yXJwFrNF",
+  RAZORPAY_CHECKOUT_URL: "https://checkout.razorpay.com/v1/checkout.js",
+
   THANK_YOU_URL: "",
   EBOOK_DOWNLOAD_URL: "",
 
@@ -56,6 +66,14 @@ export const config = {
     {
       question: "Can I use ChatGPT for these methods?",
       answer: "Yes, the methods are designed around practical uses of ChatGPT and other accessible AI tools."
+    },
+    {
+      question: "Can I really earn money by watching ads?",
+      answer: "Yes. The guide includes a dedicated method on earning from watching ads — it teaches you which genuine platforms actually pay, how to avoid scams, and simple daily routines people use to build a steady side income from their phone."
+    },
+    {
+      question: "Can I earn income while chatting with ChatGPT?",
+      answer: "Absolutely. Most people only chat with ChatGPT for fun. This guide shows you the real ways to turn those conversations into paid work — such as paid AI training tasks, AI-powered chat support for businesses, and chat-based freelance services you can offer."
     },
     {
       question: "Is income guaranteed?",

@@ -1,7 +1,8 @@
 // src/analytics/tracker.js
+// Sends visitor / page-view / click events to the CodeIgniter 4 backend.
 
-// Using Vite environment variables
-const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || 'https://gurunetra.sfinteriordecoration.com/api';
+// Routes to CodeIgniter 4 backend (Vite dev proxy forwards /api -> localhost:8080)
+const API_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 /**
  * Generate a random unique ID
@@ -36,32 +37,33 @@ function getSessionId() {
 
 const Analytics = {
   isInitialized: false,
-  heartbeatInterval: null,
 
   async sendRequest(endpoint, payload, useBeacon = false) {
     const data = {
       visitor_id: getVisitorId(),
       session_id: getSessionId(),
-      ...payload
+      ...payload,
     };
+
+    const url = `${API_URL}/${endpoint}`;
+    const body = JSON.stringify(data);
 
     try {
       if (useBeacon && navigator.sendBeacon) {
-        // sendBeacon is better for unload events
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        navigator.sendBeacon(`${API_URL}/${endpoint}`, blob);
-      } else {
-        await fetch(`${API_URL}/${endpoint}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          // Don't keep connections alive unnecessarily
-          keepalive: endpoint === 'end-session.php'
-        });
+        // sendBeacon cannot send custom headers, so we rely on the raw body — CI4 getJSON() parses it fine
+        navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+        return;
       }
-    } catch (e) {
-      // Fail silently, never break the app
-      console.warn('Analytics tracking failed silently.', e);
+
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+      });
+    } catch (err) {
+      // Analytics should never break the app
+      console.warn('[analytics] request failed:', err);
     }
   },
 
@@ -70,84 +72,92 @@ const Analytics = {
     this.isInitialized = true;
 
     // Track initial visit
-    this.sendRequest('track-visit.php', {
+    this.sendRequest('track/visit', {
       page_url: window.location.href,
       page_title: document.title,
-      referrer: document.referrer || ''
+      referrer: document.referrer || '',
     });
 
-    // Start heartbeat
-    this.startHeartbeat();
+    // Global click listener — captures clicks on all links/buttons/[data-analytics-event]
+    const handler = (e) => {
+      const target = e.target.closest?.('a, button, [data-analytics-event]') || null;
+      if (!target) return;
 
-    // Listen for visibility change to send heartbeat / end session
+      const customEvent = target.getAttribute('data-analytics-event');
+      let eventName = customEvent || 'click';
+
+      // Buttons inside the checkout modal get explicit funnel events
+      const modalAncestor = target.closest?.('.checkout-modal-content');
+      if (modalAncestor && !customEvent) {
+        eventName = 'checkout_click';
+      }
+
+      const elementId = target.id || '';
+      const elementText = (target.innerText || '').trim().substring(0, 100);
+
+      this.sendRequest('track/event', {
+        event_name: eventName,
+        element_id: elementId,
+        element_text: elementText,
+        page_url: window.location.href,
+        event_data: {
+          tag: target.tagName,
+          href: target.href || null,
+        },
+      });
+    };
+
+    // Capture phase so nothing gets swallowed by React synthetic events
+    document.addEventListener('click', handler, true);
+
+    // Heartbeat / end-session on tab visibility changes
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        this.sendRequest('end-session.php', { exit_page: window.location.href }, true);
+        this.sendRequest('track/end-session', { exit_page: window.location.href }, true);
       } else {
-        this.sendRequest('heartbeat.php', {});
+        this.sendRequest('track/heartbeat', {});
       }
     });
 
-    // Handle window unload
     window.addEventListener('pagehide', () => {
-      this.sendRequest('end-session.php', { exit_page: window.location.href }, true);
+      this.sendRequest('track/end-session', { exit_page: window.location.href }, true);
     });
-
-    // Listen for clicks on tracked elements
-    document.addEventListener('click', this.handleClick.bind(this));
   },
 
   trackPageView() {
-    this.sendRequest('page-view.php', {
+    if (!this.isInitialized) this.init();
+    this.sendRequest('track/page-view', {
       page_url: window.location.href,
-      page_title: document.title
+      page_title: document.title,
     });
   },
 
-  trackEvent(eventName, eventData = {}) {
-    this.sendRequest('track-event.php', {
+  async trackEvent(eventName, eventData = {}) {
+    if (!this.isInitialized) this.init();
+    await this.sendRequest('track/event', {
       event_name: eventName,
       page_url: window.location.href,
-      event_data: eventData
+      event_data: eventData,
     });
   },
 
-  startHeartbeat() {
-    if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
-    // Send heartbeat every 30 seconds
-    this.heartbeatInterval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        this.sendRequest('heartbeat.php', {});
-      }
-    }, 30000);
+  async endSession() {
+    await this.sendRequest('track/end-session', {
+      exit_page: window.location.href,
+    });
   },
 
-  handleClick(e) {
-    // Find closest anchor, button, or element with data-analytics-event
-    const target = e.target.closest('a, button, [role="button"], [data-analytics-event]');
-    
-    if (!target) return;
-
-    const eventName = target.getAttribute('data-analytics-event') || 'click';
-    const elementId = target.id || '';
-    const elementText = target.innerText ? target.innerText.substring(0, 100).trim() : '';
-    
-    // Ignore empty clicks that don't have an ID or specific event
-    if (!elementId && !target.getAttribute('data-analytics-event') && target.tagName !== 'BUTTON' && target.tagName !== 'A') {
-      return;
-    }
-
-    this.sendRequest('track-event.php', {
-      event_name: eventName,
-      element_id: elementId,
-      element_text: elementText,
-      page_url: window.location.href,
-      event_data: {
-        tag: target.tagName,
-        href: target.href || null
-      }
-    });
-  }
+  async heartbeat() {
+    await this.sendRequest('track/heartbeat', {});
+  },
 };
+
+// Initialize on module load (browser only)
+if (typeof window !== 'undefined') {
+  Analytics.init();
+
+  // Send heartbeat every 30 seconds
+  setInterval(() => Analytics.heartbeat(), 30000);
+}
 
 export default Analytics;

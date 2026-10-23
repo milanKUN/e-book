@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { config } from '../config';
+import { usePricing } from '../hooks/usePricing';
 
 const TermsConditions = () => {
+  const { price } = usePricing();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -22,11 +25,11 @@ const TermsConditions = () => {
           <br/>
 
           <h3>2. Digital Product</h3>
-          <p>The product offered on this website, "{config.PRODUCT_NAME}", is a purely digital PDF eBook. No physical product will be shipped to you. Upon successful payment of ₹{config.PRODUCT_PRICE} INR, you will receive digital access to download the eBook.</p>
+          <p>The product offered on this website, "{config.PRODUCT_NAME}", is a purely digital PDF eBook. No physical product will be shipped to you. Upon successful payment of ₹{price} INR, you will receive digital access to download the eBook.</p>
           <br/>
 
           <h3>3. Pricing and Payments</h3>
-          <p>All prices are listed in Indian Rupees (INR). Payments are processed securely via Cashfree. We reserve the right to modify prices at any time without prior notice, but any purchases already processed will not be affected by subsequent price changes.</p>
+          <p>All prices are listed in Indian Rupees (INR). Payments are processed securely via Razorpay. We reserve the right to modify prices at any time without prior notice, but any purchases already processed will not be affected by subsequent price changes.</p>
           <br/>
 
           <h3>4. Copyright and Intellectual Property</h3>

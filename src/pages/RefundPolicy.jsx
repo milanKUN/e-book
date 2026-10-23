@@ -32,7 +32,7 @@ const RefundPolicy = () => {
             <li>Do NOT make another payment.</li>
             <li>Immediately contact us via WhatsApp ({config.WHATSAPP_NUMBER}) or Email ({config.EMAIL}).</li>
             <li>Provide your payment screenshot, Email ID, or Phone Number used during checkout.</li>
-            <li>We will manually verify the payment on our Cashfree dashboard and send you the direct access link within 24 hours.</li>
+            <li>We will manually verify the payment on our Razorpay dashboard and send you the direct access link within 24 hours.</li>
           </ul>
           <br/>
 

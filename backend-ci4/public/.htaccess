@@ -1,0 +1,64 @@
+# ----------------------------------------------------------------------
+# Hostinger Shared Hosting — Apache Rules for CodeIgniter 4
+# Place this file in the ROOT of your subdomain folder
+# (i.e., /public_html/gurunetra/.htaccess)
+# ----------------------------------------------------------------------
+
+# --- Security: hide server info ---
+ServerSignature Off
+
+# --- Force HTTPS ---
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- Remove trailing slashes (except root) ---
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# --- Block access to sensitive files ---
+<FilesMatch "^\.env|composer\.(json|lock)$|phpunit|spark$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# --- Route all requests through index.php ---
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+# --- Security headers ---
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --- Gzip compression ---
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>
+
+# --- Browser caching for static assets ---
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# --- PHP settings for shared hosting ---
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+    php_value upload_max_filesize 50M
+    php_value post_max_size 50M
+    php_value max_execution_time 120
+    php_value memory_limit 256M
+</IfModule>
